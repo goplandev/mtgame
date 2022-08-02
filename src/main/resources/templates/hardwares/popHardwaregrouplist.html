@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<style>
+    .fieldError {
+        border-color: #bd2130;
+    }
+</style>
+<head>
+</head>
+<body>
+<div class="container-fluid" id="result_table_div">
+    <!--<div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">장비 리스트</h6>
+        </div>
+        <div class="card-body">-->
+    <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+            <tr>
+                <th>선택</th>
+                <th>ID</th>
+                <th>이름</th>
+                <th>설명</th>
+                <th>작성일</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="hardwaregroup,i : ${hardwaregroups.page}">
+                <td><input type="checkbox" name="hgids" th:value="${hardwaregroup.id}"/></td>
+                <td th:text="${hardwaregroup.id}"></td>
+                <td th:text="${hardwaregroup.name}"></td>
+                <td th:text="${hardwaregroup.description}"></td>
+                <td th:text="${{hardwaregroup.createdDate}}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-sm-12 col-md-7">
+        <nav aria-label="Page navigation" class="paging">
+            <ul class="pagination" th:if="${hardwaregroups.page.totalPages > 1}">
+                <li class="page-item" th:classappend="${!hardwaregroups.paging.isPrevEnabled()? 'disabled' : ''}">
+                    <a class="page-link" th:onclick="'javascript:pageList('+${hardwaregroups.paging.pageNumber -1}+');'"
+                       tabindex="-1">Previous</a>
+                </li>
+                <th:block th:each="item : ${hardwaregroups.paging.getItems()}">
+                    <li class="page-item" th:classappend="${item.index == hardwaregroups.paging.pageNumber? 'active' : ''}"
+                        th:if="${item.pageItemType.name() == 'PAGE'}">
+                        <a class="page-link" th:onclick="'javascript:pageList('+${item.index}+');'" th:text="${item.index}"></a>
+                    </li>
+                    <li class="page-item disabled" th:if="${item.pageItemType.name() == 'DOTS'}">
+                        <a class="page-link" href="#">...</a>
+                    </li>
+                </th:block>
+                <li class="page-item" th:classappend="${!hardwaregroups.paging.isNextEnabled()? 'disabled' : ''}">
+                    <a class="page-link" th:onclick="'javascript:pageList('+${hardwaregroups.paging.pageNumber +1}+');'">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <!-- </div>
+ </div>-->
+    <button type="button" class="btn btn-primary" th:onclick="selectItem()">선택</button>
+    <script type="text/javascript">
+        function selectItem(){
+            var len = $("input[name='hgids']:checked").length;
+            var objArr = new Array();
+
+            if (len > 0) { //개수를 체크하고 2개부터는 each함수를 통해 각각 가져온다.
+                $("input:checkbox[name='hgids']:checked").each(function (e) {
+                    objArr.push($(this).val());
+                });
+
+            }
+
+            resultObj(objArr);
+        }
+
+        function pageList(index){
+            $.ajax({
+                url: "/modals/hardwaregroup/poplist?pageNumber="+index,
+                type:"GET",
+            }).done(function (fragment) {
+                $("#result_table_div").replaceWith(fragment);
+            });
+        }
+    </script>
+</div>
+</body>
+</html>

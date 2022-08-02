@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="~{layout/layout}">
+<style>
+    .fieldError {
+        border-color: #bd2130;
+    }
+</style>
+<th:block layout:fragment="content">
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">장비그룹 리스트</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>ID</th>
+                            <th>그룹이름</th>
+                            <th>설명</th>
+                            <th>작성일</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="hardwaregroup,i : ${hardwareGroups.page}">
+                            <!--<td th:text="${i.size - i.count+1}"></td>-->
+                            <td th:text="${hardwaregroup.id}"></td>
+                            <td th:text="${hardwaregroup.id}"></td>
+                            <td>
+                                <a href="#" th:href="@{/hardwares/editgroup/{id} (id=${hardwaregroup.id})}"
+                                   th:text="${hardwaregroup.name}"></a>
+                            </td>
+                            <td th:text="${hardwaregroup.description}"></td>
+                            <td th:text="${{hardwaregroup.createdDate}}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div>
+                        <form id="form" role="form" action="/hardwares/newgroup"
+                              method="get">
+                            <button type="submit" class="btn btn-primary" id="btnSave">작성</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-5">
+                        <!--<div class="dataTables_info" id="dataTable_info" role="status" aria-live="polite">
+                            Showing 26 to 50 of 57 entries
+                        </div>-->
+                    </div>
+                    <div class="col-sm-12 col-md-7">
+                        <nav aria-label="Page navigation" class="paging">
+                            <ul class="pagination" th:if="${hardwareGroups.page.totalPages > 1}">
+                                <li class="page-item" th:classappend="${!hardwareGroups.paging.isPrevEnabled()? 'disabled' : ''}">
+                                    <a class="page-link" th:href="@{'/hardwaregroups?pageNumber=' + ${hardwareGroups.paging.pageNumber - 1}}"
+                                       tabindex="-1">Previous</a>
+                                </li>
+                                <th:block th:each="item : ${hardwareGroups.paging.getItems()}">
+                                    <li class="page-item" th:classappend="${item.index == hardwareGroups.paging.pageNumber? 'active' : ''}"
+                                        th:if="${item.pageItemType.name() == 'PAGE'}">
+                                        <a class="page-link" th:href="@{'/hardwaregroups?pageNumber=' + ${item.index}}"
+                                           th:text="${item.index}"></a>
+                                    </li>
+                                    <li class="page-item disabled" th:if="${item.pageItemType.name() == 'DOTS'}">
+                                        <a class="page-link" href="#">...</a>
+                                    </li>
+                                </th:block>
+                                <li class="page-item" th:classappend="${!hardwareGroups.paging.isNextEnabled()? 'disabled' : ''}">
+                                    <a class="page-link" th:href="@{'/hardwaregroups?pageNumber=' + ${hardwareGroups.paging.pageNumber + 1}}">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+</html>

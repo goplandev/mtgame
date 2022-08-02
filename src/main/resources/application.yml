@@ -1,0 +1,59 @@
+spring:
+  datasource:
+    #url: jdbc:sqlserver://localhost:1433;databaseName=mtgame
+    #url: jdbc:sqlserver://192.168.0.23:1433;databaseName=mtgame
+    #username: devgo
+    #password: 1qaz@WSX
+    #driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:mysql://goplan-db.ckukxm95uupu.ap-northeast-2.rds.amazonaws.com:3306/mtgamedb
+    username: devgo
+    password: dkagh1231
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  devtools:
+    livereload:
+      enabled: true
+    freemarker:
+      cache: false
+
+  jpa:
+    hibernate:
+      #ddl-auto: create-drop
+      #ddl-auto: create
+      ddl-auto: none
+      #ddl-auto: update
+    properties:
+      hibernate:
+        #          show_sql:true
+        format_sql: true
+        default_batch_fetch_size: 500 #//인쿼리 갯수 100 ~ 1000(Max)
+    open-in-view: false
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 200MB
+  profiles:
+    active: local
+
+server:
+  #port: 8080
+  port: 80
+  context-path: /
+
+#logging:
+#  pattern:
+#    file: "[%d{HH:mm:ss.SSS}][%-5level][%logger.%method:line%line] - %msg%n"
+#    rolling-file-name: "D:/upload/logs/abc.%d{yyyy-MM-dd}.%i"
+#  file:
+#    name: D:/upload/logs/abc.log
+#    max-history: 30
+#    max-size: 1MB
+#  level:
+#    org:
+#      springframework: INFO
+#      org.hibernate.SQL: debug
+#      #org.hibernate.type: trace

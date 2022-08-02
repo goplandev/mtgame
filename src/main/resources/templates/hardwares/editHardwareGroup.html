@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="~{layout/layout}">
+<style>
+    .fieldError {
+        border-color: #bd2130;
+    }
+</style>
+<th:block layout:fragment="content">
+    <!-- Begin Page Content -->
+<div class="container-fluid">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">장비그룹등록</h6>
+        </div>
+    <div class="card-body">
+    <form role="form"  th:object="${hardwareGroup}"
+          method="post">
+        <input type="hidden" id="id" th:if="*{id != null and id > 0}" th:field="*{id}" />
+        <input type="hidden" th:value="*{hwids}" th:field="*{hwids}"/>
+        <!--<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />-->
+        <div class="form-group">
+            <label th:for="name">이름</label>
+            <input type="text" th:field="*{name}" class="form-control"placeholder="이름을 입력하세요">
+        </div>
+        <div class="form-group">
+            <label th:for="description">설명</label>
+            <input type="text" th:field="*{description}" class="form-control"
+                   placeholder="설명을 입력하세요">
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-6 mb-3 mb-sm-0">
+                <div class="form-group row">
+                    <div class="col-sm-2 mb-3 mb-sm-0">
+                        <button type="submit" class="btn btn-primary">저장</button>
+                    </div>
+                    <!--<div th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') ? true : false}">-->
+                        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#pophard">장비선택</button>
+                        <a th:onclick="'javascript:GroupDelete('+*{id}+');'"
+                           class="btn btn-danger" role="button">그룹삭제</a>
+                    <!--</div>-->
+                </div>
+            </div>
+        </div>
+    </form>
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+        <th:block th:replace="_modals :: modal2('pophard')">modal</th:block>
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>ID</th>
+                    <th>장비명</th>
+                    <th>수정일</th>
+                    <th>삭제</th>
+                </tr>
+                </thead>
+                <tbody>
+                <th:block th:each="hardwareGroup : ${mappings[0]}">
+                    <tr>
+                        <!--<td th:text="${hardwareGroupDto.id}"></td>
+                        <td th:text="${hardwareGroupDto.hardwareMaps[0].hardwarename}"></td>
+                        <td th:text="${hardwareGroupDto.editDate}"></td>-->
+                    <tr th:each="hm,i: ${hardwareGroup.hardwareMaps}">
+                        <td th:text="${i.size - i.count+1}"></td>
+                        <td th:text="${hm.hardware.id}"></td>
+                        <td th:text="${hm.hardware.name}"></td>
+                        <td th:text="${{hm.hardware.createdDate}}"></td>
+                        <td>
+                            <!--<div th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') ? true : false}">-->
+                                <a th:onclick="'javascript:HardwareDelete('+${hm.hardware.id}+');'"
+                                   class="btn btn-danger" role="button">삭제</a>
+                            <!--</div>-->
+                        </td>
+                    </tr>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </div>
+</div>
+    <script>
+        $('#pophard').on('show.bs.modal', function () {
+            /*var str = prompt("Please enter your name", "devgo");
+            $.get("/modals/hardwares/pop?str=" + str, function (data) {
+                $('#pophard').find('.modal-body').html(data);
+            })*/
+            $.get("/modals/hardwares/poplist" , function (data) {
+                $('#pophard').find('.modal-body').html(data);
+            })
+        });
+
+    </script>
+    <script type="text/javascript" th:inline="javascript">
+        var str;
+        function resultObj(objArr){
+            document.getElementById('hwids').value = objArr.toString();
+            alert(objArr.toString());
+
+            /*<![CDATA[*/
+            $('#pophard').modal('hide');
+            /*]]>*/
+        }
+        function HardwareDelete(h_id){
+            if(confirm("그룹에서 장비를 삭제 하시겠습니까?")) {
+                $.ajax({
+                    url: "/api/hardware_map_delete?hardware_map_id=" + h_id,
+                    type: "GET",
+                });
+                alert("장비를 삭제 하였습니다.");
+                window.location.href = window.location.href;
+            }
+        }
+        function GroupDelete(group_id){
+            if(confirm("그룹을 삭제 하시겠습니까?")) {
+                $.ajax({
+                    url: "/api/hardware_group_delete?group_id="+group_id,
+                    type:"GET",
+                }).done(function (fragment){
+                    alert("그룹을 삭제 하였습니다.");
+                    location.href="/hardwaregroups";
+                });
+            }
+        }
+
+    </script>
+</th:block>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="~{layout/layout}">
+<style>
+    .fieldError {
+        border-color: #bd2130;
+    }
+</style>
+<th:block layout:fragment="content">
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">회원리스트</h6>
+            </div>
+            <!-- Search -->
+            <div class="card-header py-3">
+            <form  role="form" action="/members" method="GET"
+                    class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                <div class="input-group">
+                    <input type="text" name="keyword" class="form-control bg-light border-0 small" placeholder="Search for..."
+                           aria-label="Search" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fas fa-search fa-sm"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>ID</th>
+                            <th>email</th>
+                            <th>이름</th>
+                            <th>전화번호</th>
+                            <th>작성일</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="member,i : ${members}">
+                                <td th:text="${member.id}"></td>
+                                <td th:text="${member.id}"></td>
+                                <td th:text="${member.email}"></td>
+                                <td th:text="${member.name}"></td>
+                                <td th:text="${member.phone}"></td>
+                                <td th:text="${{member.createdDate}}"></td>
+                                <td>
+                                    <a href="#" th:href="@{/members/{id}/edit (id=${member.id})}"
+                                       class="btn btn-primary" role="button">수정</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <form id="form" role="form" action="/members/new"
+                          method="get">
+                        <button type="submit" class="btn btn-primary" id="btnSave">작성</button>
+                    </form>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-5">
+                        <!--<div class="dataTables_info" id="dataTable_info" role="status" aria-live="polite">
+                            Showing 26 to 50 of 57 entries
+                        </div>-->
+                    </div>
+                    <div class="col-sm-12 col-md-7">
+                        <nav aria-label="Page navigation" class="paging">
+                            <ul class="pagination" th:if="${memberpages.page.totalPages > 1}">
+                                <li class="page-item" th:classappend="${!memberpages.paging.isPrevEnabled()? 'disabled' : ''}">
+                                    <a class="page-link" th:href="@{'/members?pageNumber=' + ${memberpages.paging.pageNumber - 1}}"
+                                       tabindex="-1">Previous</a>
+                                </li>
+                                <th:block th:each="item : ${memberpages.paging.getItems()}">
+                                    <li class="page-item" th:classappend="${item.index == memberpages.paging.pageNumber? 'active' : ''}"
+                                        th:if="${item.pageItemType.name() == 'PAGE'}">
+                                        <a class="page-link" th:href="@{'/members?pageNumber=' + ${item.index}}"
+                                           th:text="${item.index}"></a>
+                                    </li>
+                                    <li class="page-item disabled" th:if="${item.pageItemType.name() == 'DOTS'}">
+                                        <a class="page-link" href="#">...</a>
+                                    </li>
+                                </th:block>
+                                <li class="page-item" th:classappend="${!memberpages.paging.isNextEnabled()? 'disabled' : ''}">
+                                    <a class="page-link" th:href="@{'/members?pageNumber=' + ${memberpages.paging.pageNumber + 1}}">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorator="~{layout/layout}"
+>
+
+<th:block layout:fragment="content">
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+        <h1>MonoTrain MANAGER</h1>
+       <!-- <h3 sec:authorize="isAuthenticated()">반갑습니다. <span sec:authentication="name"></span>님!</h3>-->
+        <hr>
+        <!--  로그인한 상태라면 이름과, logout 버튼 출력      -->
+        <!--<div sec:authorize="isAuthenticated()">
+            <h3>반갑습니다.</h3>
+            <h2><span sec:authentication="name">님!</span></h2>
+            <a href="/logout" th:href="@{/members/logout}">Logout</a>
+        </div>-->
+        <!--  로그인한 상태가 아니라면 login 버튼 출력  -->
+        <!--<div sec:authorize="isAnonymous()">
+            <a href="#login" th:href="@{/members/login}">Login</a>
+            &lt;!&ndash; 회원은 관리자가 추가함 &ndash;&gt;
+           &lt;!&ndash; <a href="#login" th:href="@{/members/signup}">회원가입</a>&ndash;&gt;
+        </div>-->
+
+    </div>
+</th:block>
+</html>
