@@ -13,6 +13,7 @@ public class BoardDivisionService {
     private final BoardDivisionRepository boardDivisionRepository;
     public BoardDivision findOne(Long id){
         //return memberRepository.findOne(id);
+
         //JpaRepository 사용시
         BoardDivision boardDivision = boardDivisionRepository.findById(id).get();
         return boardDivision;

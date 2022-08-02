@@ -41,6 +41,9 @@ public class InitDB {
             em.persist(member2);
             Member member3 = createMember("gardeniot@naver.com", "gardeniot@naver.com", "01012345678", "gardeniot@naver.com", "1111", Role.MEMBER);
             em.persist(member3);
+            Member member4 = createMember("gardeniot1@naver.com", "gardeniot1@naver.com", "01012345678", "gardeniot@naver.com", "1111", Role.MEMBER);
+            em.persist(member3);
+
             Thread.sleep(500);
             BoardDivision boardDivision1 = createBoardDivision("자유게시판");
             em.persist(boardDivision1);

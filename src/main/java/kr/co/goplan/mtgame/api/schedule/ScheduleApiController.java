@@ -12,7 +12,10 @@ import org.springframework.web.servlet.ModelAndView;
 public class ScheduleApiController {
 
     private final ScheduleService scheduleService;
-    ///////////   contents mapping        ///////////////////////////////////
+
+    ///////////   contents mapping ////
+    // ///////-----------------------//////////////
+
     @GetMapping("/schedule_contents_map_delete")
     public Long deleteMapping(@RequestParam(value = "contents_map_id", required = false, defaultValue = "0") Long contents_map_id , ModelAndView mav){
         //맵핑된 스케쥴 제거
